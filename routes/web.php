@@ -15,4 +15,4 @@ Route::get('/', function () {
 	echo phpinfo();
     //return view('welcome');
 });
-Route::get('wx','TestController@index');
+Route::get('/wx','TextController@wx');

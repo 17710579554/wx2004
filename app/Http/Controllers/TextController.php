@@ -1,11 +1,13 @@
 <?php
-namespace app\index\controller;
 
-use think\Controller;
-use think\Request;
+namespace App\Http\Controllers;
 
-class TestController extends Controller{
-    function index(){
+use Illuminate\Http\Request;
+
+class TextController extends Controller
+{
+    public function wx(Request $request){
+            $echostr=$request->get('echostr');
         $signature = $_GET["signature"];
         $timestamp = $_GET["timestamp"];
         $nonce = $_GET["nonce"];
@@ -17,7 +19,7 @@ class TestController extends Controller{
         $tmpStr = sha1( $tmpStr );
 
         if( $tmpStr == $signature ){
-            echo $_GET['echostr'];
+            echo $echostr;
         }else{
             return false;
         }
