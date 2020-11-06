@@ -10,14 +10,14 @@ class TestController extends Controller{
         $timestamp = $_GET["timestamp"];
         $nonce = $_GET["nonce"];
 
-        $token = guqingsong;
+        $token = env("WX_TOKNE");
         $tmpArr = array($token, $timestamp, $nonce);
         sort($tmpArr, SORT_STRING);
         $tmpStr = implode( $tmpArr );
         $tmpStr = sha1( $tmpStr );
 
         if( $tmpStr == $signature ){
-            return true;
+            echo $_GET['echostr'];
         }else{
             return false;
         }
