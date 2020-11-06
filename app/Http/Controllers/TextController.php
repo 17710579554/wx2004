@@ -24,7 +24,8 @@ class TextController extends Controller
             //记录日志
             file_put_contents("wx_event,log",$xml_str);
             //把xml转换PHP数据
-            echo "";
+            echo "echostr";
+            die;
         }else{
            echo "";
         }
