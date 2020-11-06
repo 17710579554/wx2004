@@ -15,4 +15,6 @@ Route::get('/', function () {
 	echo phpinfo();
     //return view('welcome');
 });
-Route::get('/wx','TextController@wx');
+Route::post('/wx','TextController@wx'); //微信接入
+
+Route::get('/access_token','TextController@access_token'); //获取access_token
