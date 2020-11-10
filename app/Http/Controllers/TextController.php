@@ -62,7 +62,7 @@ class TextController extends Controller
         $postArray= simplexml_load_string($postStr,"SimpleXMLElement",LIBXML_NOCDATA);
         if ($postArray->MsgType=="event"){
             if ($postArray->Event=="subscribe"){
-                $array = ['阳光不燥微风正好', '你我山巅自相逢'];
+                $array = ['欢迎关注'];
                 $content = $array[array_rand($array)];
                 $this->text($postArray,$content);
 
@@ -83,7 +83,7 @@ class TextController extends Controller
                     $this->text($postArray,$content);
                     break;
                 default;
-                    $content='失恋小铺';
+                    $content='陈嘉尚';
                     $this->text($postArray,$content);
                     break;
             }
