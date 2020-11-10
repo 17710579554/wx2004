@@ -27,7 +27,6 @@ class TextController extends Controller
             echo "";
             $this->responseMsg();
             $this->getweather();
-            $this->createMenu();
 
         }else{
            echo "";
