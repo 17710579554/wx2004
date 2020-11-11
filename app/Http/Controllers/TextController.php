@@ -134,8 +134,8 @@ class TextController extends Controller
             'button'    => [
                 [
                     'type'  => 'click',
-                    'name'  => '123',
-                    'key'   => 'wx.2004.com'
+                    'name'  => 'WX.2004',
+                    'key'   => 'k_wx_2004'
                 ],
                 [
                     'type'  => 'view',
@@ -143,8 +143,35 @@ class TextController extends Controller
                     'url'   => 'https://www.baidu.com'
                 ],
 
+                [
+                    'name'          => '菜单',
+                    'sub_button'    => [
+                        [
+                            'type'  => 'click',
+                            'name'  => '签到',
+                            'key'   => 'checkin'
+                        ],
+                        [
+                            'type'  => 'click',
+                            'name'  => '点赞',
+                            'key'   => 'Like'
+                        ],
+                        [
+                            'type'  => 'pic_photo_or_album',
+                            'name'  => '传图',
+                            'key'   => 'uploadimg'
+                        ],
+                        [
+                            'type'  => 'click',
+                            'name'  => '天气',
+                            'key'   => 'weather'
+                        ]
+                    ]
+                ],
+
             ]
         ];
+
         $menu = json_encode($menu,256);
         $res = $client->request('post', $url, [
             'auth' => ['user', 'pass'],
