@@ -25,3 +25,5 @@ Route::post('/test3','TextController@test3'); //测试3
 Route::get('/getweather','TextController@getweather');  //天气
 Route::get('/createMenu','TextController@createMenu');  //
 Route::any('/eckSignature','TextController@checkSignature');
+
+Route::get('/test5','TextController@test5');

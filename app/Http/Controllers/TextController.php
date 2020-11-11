@@ -7,6 +7,9 @@ use GuzzleHttp\Client;
 class TextController extends Controller
 {
     public function wx(Request $request){
+        //echo __METHOD__;die;
+        //echo __LINE__;die;
+
             $echostr=$request->get('echostr');
         $signature = $_GET["signature"];
         $timestamp = $_GET["timestamp"];
@@ -35,6 +38,7 @@ class TextController extends Controller
     //获取access_token
     public function access_token(){
         $key="access_token:";
+
         //判断是否 有缓存
         $token=Redis::get($key);
         if($token){
@@ -54,7 +58,7 @@ class TextController extends Controller
             Redis::expire($key,20);
         }
 
-        echo "access_token:".$token;
+        return $token;
     }
     //关注回复
     public function responseMsg(){
@@ -119,5 +123,47 @@ class TextController extends Controller
         echo $info;
     }
 
+    public function test5(){
+        $client = new Client();
+        $this->access_token();
+        $res=   $this->access_token();
+        //dd($res);
+        $url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$res;
+       // echo $url;
+        $menu = [
+            'button'    => [
+                [
+                    'type'  => 'click',
+                    'name'  => '微信',
+                    'key'   => 'wx.2004.com'
+                ],
+                [
+                    'type'  => 'view',
+                    'name'  => '百度',
+                    'url'   => 'https://www.baidu.com'
+                ],
+
+            ]
+        ];
+        $res = $client->request('post', $url, [
+            'auth' => ['user', 'pass'],
+            'verify'=>false,
+        ]);
+       // echo $res->getStatusCode();
+
+        $json_data = $res->getBody();
+
+        //判断接口返回
+        $info = json_decode($json_data,true);
+
+        if($info['errcode'] > 0)        //判断错误码
+        {
+            // TODO 处理错误
+        }else{
+            // TODO 创建菜单成功逻辑
+        }
+
+
+    }
 
 }
