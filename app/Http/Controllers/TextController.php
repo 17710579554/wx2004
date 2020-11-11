@@ -42,9 +42,9 @@ class TextController extends Controller
         //判断是否 有缓存
         $token=Redis::get($key);
         if($token){
-            echo '有缓存';
+            //echo '有缓存';
         }else{
-            echo '无缓存';
+          //  echo '无缓存';
             $url= "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".env('WX_APPID')."&secret=".env('WX_APPSECRET')."";
             // dd($url);
             $response=file_get_contents($url);
@@ -134,7 +134,7 @@ class TextController extends Controller
             'button'    => [
                 [
                     'type'  => 'click',
-                    'name'  => '微信',
+                    'name'  => '123',
                     'key'   => 'wx.2004.com'
                 ],
                 [
@@ -145,9 +145,11 @@ class TextController extends Controller
 
             ]
         ];
+        $menu = json_encode($menu,256);
         $res = $client->request('post', $url, [
             'auth' => ['user', 'pass'],
             'verify'=>false,
+            'body'  =>$menu
         ]);
        // echo $res->getStatusCode();
 
@@ -155,12 +157,12 @@ class TextController extends Controller
 
         //判断接口返回
         $info = json_decode($json_data,true);
-
+       // dd($info);
         if($info['errcode'] > 0)        //判断错误码
         {
-            // TODO 处理错误
+          echo '创建失败';
         }else{
-            // TODO 创建菜单成功逻辑
+           echo '创建成功';
         }
 
 
