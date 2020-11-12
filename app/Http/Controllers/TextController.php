@@ -83,7 +83,7 @@ class TextController extends Controller
                     if($user_id){
                         $user_id->subscribe=1;   //查看这个用户的状态  1关注   0未关注
                         $user_id->save();
-                        $content="谢谢你们再次关注,我们加倍努力的";
+                        $content="感谢，再次关注";
 //                                    echo $this->text($obj,$content);
                     }else{
                         $res=[
@@ -100,7 +100,7 @@ class TextController extends Controller
                             "subscribe_scene"=>$user["subscribe_scene"]
                         ];
                         User::insert($res);
-                        $content="官人，谢谢关注！";
+                        $content="关注成功";
 //                                    echo $this->text($obj,$content);
 
                     }
