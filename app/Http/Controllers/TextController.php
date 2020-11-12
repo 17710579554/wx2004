@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
-use App\Model\User;
+use App\model\User;
 class TextController extends Controller
 {
     public function wx(Request $request){
