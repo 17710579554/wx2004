@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use App\Model\User;
 class TextController extends Controller
 {
     public function wx(Request $request){
@@ -34,6 +35,7 @@ class TextController extends Controller
         }else{
            echo "";
         }
+
     }
     //获取access_token
     public function access_token(){
@@ -65,12 +67,55 @@ class TextController extends Controller
         $postStr = file_get_contents("php://input");
         $postArray= simplexml_load_string($postStr,"SimpleXMLElement",LIBXML_NOCDATA);
         if ($postArray->MsgType=="event"){
-            if ($postArray->Event=="subscribe"){
-                $array = ['欢迎关注'];
-                $content = $array[array_rand($array)];
-                $this->text($postArray,$content);
+            if($postArray->Event=="subscribe"){
+                $openid=$postArray->FromUserName;   //获取用户的openid
+                $AccessToken=$this->access_token();   //获取token
+                $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$AccessToken."&openid=".$openid."&lang=zh_CN";
+//                            dd($url);
+                $user=file_get_contents($url);    //获取第三方 的数据
+                $user=json_decode($user,true);
+
+                if(isset($user['errcode'])){
+                    $this->writeLog("获取用户信息失败了");
+
+                }else{
+                    $user_id=User::where('openid',$openid)->first();   //查询一条
+                    if($user_id){
+                        $user_id->subscribe=1;   //查看这个用户的状态  1关注   0未关注
+                        $user_id->save();
+                        $content="谢谢你们再次关注,我们加倍努力的";
+//                                    echo $this->text($obj,$content);
+                    }else{
+                        $res=[
+                            "subscribe"=>$user["subscribe"],
+                            "openid"=>$user["openid"],
+                            "nickname"=>$user["nickname"],
+                            "sex"=>$user["sex"],
+                            "city"=>$user["city"],
+                            "country"=>$user["country"],
+                            "province"=>$user["province"],
+                            "language"=>$user["language"],
+                            "headimgurl"=>$user["headimgurl"],
+                            "subscribe_time"=>$user["subscribe_time"],
+                            "subscribe_scene"=>$user["subscribe_scene"]
+                        ];
+                        User::insert($res);
+                        $content="官人，谢谢关注！";
+//                                    echo $this->text($obj,$content);
+
+                    }
+                }
 
             }
+            //取消关注
+            if($postArray->Event=="unsubscribe"){
+//                            $content="取消关注成功,期待你下次关注";
+//                            $openid=$obj->FromUserName;
+//                            $user_id=User::where('user_id',$openid)->first();
+                $user_id->subscribe=0;
+                $user_id->save();
+            }
+            echo   $this->text($postArray,$content);
         }elseif ($postArray->MsgType=="text"){
             $msg=$postArray->Content;
             switch ($msg){
@@ -139,8 +184,8 @@ class TextController extends Controller
                 ],
                 [
                     'type'  => 'view',
-                    'name'  => '百度',
-                    'url'   => 'https://www.baidu.com'
+                    'name'  => '商城',
+                    'url'   => 'http://2004gqs.comcto.com/'
                 ],
 
                 [
@@ -194,5 +239,6 @@ class TextController extends Controller
 
 
     }
+
 
 }
