@@ -54,10 +54,9 @@ class TextController extends Controller
             $token=$data['access_token'];
             //dd($token);
             //存入redis
-
             Redis::set($key,$token);
             //设置过期时间
-            Redis::expire($key,20);
+            Redis::expire($key,3600);
         }
 
         return $token;
